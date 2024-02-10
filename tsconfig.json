@@ -16,6 +16,13 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-  }
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@constants/*": ["./src/constants/*"],
+      "@exception/*": ["./src/exception/*"],
+      "@modules/*": ["./src/modules/*"],
+      "@strategy/*": ["./src/strategy/*"]
+    }
+  },
+  "exclude": ["node_modules"]
 }
