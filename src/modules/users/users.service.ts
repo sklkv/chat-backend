@@ -13,9 +13,10 @@ export class UsersService {
   async findSameCredentialUsers({
     email,
     username,
+    phoneNumber,
   }: FindUserDto): Promise<User[]> {
     const sameCredentialUsers = await this.userRepository.findAll({
-      where: Sequelize.or({ email }, { username }),
+      where: Sequelize.or({ email }, { username }, { phoneNumber }),
     });
     return sameCredentialUsers;
   }
@@ -23,9 +24,10 @@ export class UsersService {
   async findUser({
     email = null,
     username = null,
+    phoneNumber = null,
   }: FindUserDto): Promise<User> {
     const user = await this.userRepository.findOne({
-      where: Sequelize.or({ email }, { username }),
+      where: Sequelize.or({ email }, { username }, { phoneNumber }),
     });
     return user;
   }

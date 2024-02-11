@@ -7,6 +7,9 @@ export class FindUserDto {
   })
   readonly email: string;
 
+  @ApiProperty({ example: "string", description: "+79297007070" })
+  readonly phoneNumber: string;
+
   @ApiProperty({ example: "string", description: "Mozart" })
   readonly username: string;
 }

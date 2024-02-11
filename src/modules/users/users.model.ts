@@ -40,21 +40,14 @@ export class User extends Model<User, IUserCreationAttributes> {
   @Column({ type: DataType.STRING, allowNull: false })
   password: string;
 
-  @ApiProperty({ example: "Узбекистан", description: "Страна пользователя" })
-  @Column({ type: DataType.STRING, allowNull: true })
-  country: string;
+  @ApiProperty({ example: "string", description: "Телефон пользователя" })
+  @Column({ type: DataType.STRING, allowNull: false })
+  phoneNumber: string;
 
-  @ApiProperty({
-    example: "true",
-    description: "Согласие пользователя получать новости",
-  })
-  @Column({ type: DataType.BOOLEAN, allowNull: false })
-  agreedToRecieveNews: boolean;
-
-  @ApiProperty({
-    example: "true",
-    description: "Согласие пользователя на обработку персональных данных",
-  })
-  @Column({ type: DataType.BOOLEAN, allowNull: false })
-  consentedDataProcessing: boolean;
+  // @ApiProperty({
+  //   example: "true",
+  //   description: "Согласие пользователя на обработку персональных данных",
+  // })
+  // @Column({ type: DataType.BOOLEAN, allowNull: false })
+  // consentedDataProcessing: boolean;
 }

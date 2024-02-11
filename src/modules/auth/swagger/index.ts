@@ -5,12 +5,14 @@ export class SignUpResponse {
   @ApiProperty({
     example: {
       email: "pepe@pepe.com",
+      phoneNumber: "+79297007070",
       username: "pepe",
     },
     description: "Ответ успешной регистрации пользователя",
   })
   readonly response: {
     email: string;
+    phoneNumber: string;
     username: string;
   };
   @ApiProperty({ example: "OK | FAILED", description: "Статус ответа" })
@@ -21,6 +23,7 @@ export class SignInResponse {
   @ApiProperty({
     example: {
       email: "woody@mail.example",
+      phoneNumber: "+79297007070",
       username: "Woody Woodpecker",
       access_token: "jwt-token",
     },
@@ -28,6 +31,7 @@ export class SignInResponse {
   })
   readonly response: {
     email: string;
+    phoneNumber: string;
     username: string;
     access_token: string;
   };

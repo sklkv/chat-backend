@@ -19,23 +19,25 @@ export class AuthService {
   ): Promise<{
     response: {
       email: string;
+      phoneNumber: string;
       username: string;
     };
     status: RESPONSE_STATUS;
   }> {
-    const { email, username } = userDto;
+    const { email, username, phoneNumber } = userDto;
 
     const sameCredentialsUsers = await this.userService.findSameCredentialUsers(
       {
         email,
         username,
+        phoneNumber,
       }
     );
 
     if (sameCredentialsUsers.length) {
-      throw new BadBaseException("Email or username in use");
+      throw new BadBaseException("Email, phone number or username in use");
     } else {
-      // add password salt for better security
+      // TODO: добавить соль для лучшей защиты пароля
       const hashedPassword = await bcrypt.hash(userDto.password, 10);
 
       const user = await this.userService.createUser({
@@ -48,6 +50,7 @@ export class AuthService {
         response: {
           email: user.email,
           username: user.username,
+          phoneNumber: user.phoneNumber,
         },
         status: RESPONSE_STATUS.OK,
       };
@@ -59,15 +62,17 @@ export class AuthService {
   ): Promise<{
     response: {
       email: string;
+      phoneNumber: string;
       username: string;
       access_token: string;
     };
     status: RESPONSE_STATUS;
   }> {
-    const { email, username } = userDto;
+    const { email, username, phoneNumber } = userDto;
     const user = await this.userService.findUser({
       email,
       username,
+      phoneNumber,
     });
 
     if (!user) {
@@ -79,15 +84,17 @@ export class AuthService {
         throw new BadBaseException("Invalid password");
       } else {
         const jwtPayload = {
-          email,
           sub: user.id,
+          email,
+          phoneNumber,
           username,
         };
         // TODO: подумать над необходимыми атрибутами
         return {
           response: {
-            email: user.email,
-            username: user.username,
+            email,
+            username,
+            phoneNumber,
             access_token: this.jwtService.sign(jwtPayload),
           },
           status: RESPONSE_STATUS.OK,

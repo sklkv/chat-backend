@@ -4,6 +4,7 @@ import { JwtAuthGuard } from "@strategy/jwt/jwt.guard";
 import { User } from "./users.model";
 import { UsersService } from "./users.service";
 
+// TODO: передать корректный тип пользователя в type
 @ApiTags("users")
 @Controller("users")
 export class UsersController {
