@@ -13,7 +13,7 @@ export class AuthService {
     private userService: UsersService
   ) {}
 
-  // TODO: сравнить пароль и подтвержедние пароля
+  // TODO: сравнить пароль и подтвержедние пароля, вынести типизацию ответа
   async singUpUser(
     userDto: SignUpDto
   ): Promise<{
@@ -24,7 +24,11 @@ export class AuthService {
     };
     status: RESPONSE_STATUS;
   }> {
-    const { email, username, phoneNumber } = userDto;
+    const { email, username, phoneNumber, password, confirmPassword } = userDto;
+
+    if (password !== confirmPassword) {
+      throw new BadBaseException("Incorrect password confirmation");
+    }
 
     const sameCredentialsUsers = await this.userService.findSameCredentialUsers(
       {
@@ -38,7 +42,7 @@ export class AuthService {
       throw new BadBaseException("Email, phone number or username in use");
     } else {
       // TODO: добавить соль для лучшей защиты пароля
-      const hashedPassword = await bcrypt.hash(userDto.password, 10);
+      const hashedPassword = await bcrypt.hash(password, 10);
 
       const user = await this.userService.createUser({
         ...userDto,

@@ -16,6 +16,9 @@ export class SignUpDto {
   @ApiProperty({ example: "alligator7", description: "Пароль пользователя" })
   readonly password: string;
 
+  @ApiProperty({ example: "alligator7", description: "Пароль пользователя" })
+  readonly confirmPassword: string;
+
   // @ApiProperty({
   //   example: "true",
   //   description: "Согласие пользователя на обработку персональных данных",
