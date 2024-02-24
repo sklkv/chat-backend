@@ -1,6 +1,11 @@
 import * as bcrypt from "bcrypt";
 import { BadRequestException, Injectable } from "@nestjs/common";
-import { SignUpDto, SignInDto } from "./dto";
+import {
+  SignUpDto,
+  SignInDto,
+  ISignUpResponseDto,
+  ISignInResponseDto,
+} from "./dto";
 import { JwtService } from "@nestjs/jwt";
 import { UsersService } from "../users/users.service";
 import { BadBaseException } from "@exception/bad-base-exception";
@@ -13,17 +18,7 @@ export class AuthService {
     private userService: UsersService
   ) {}
 
-  // TODO: сравнить пароль и подтвержедние пароля, вынести типизацию ответа
-  async singUpUser(
-    userDto: SignUpDto
-  ): Promise<{
-    response: {
-      email: string;
-      phoneNumber: string;
-      username: string;
-    };
-    status: RESPONSE_STATUS;
-  }> {
+  async singUpUser(userDto: SignUpDto): Promise<ISignUpResponseDto> {
     const { email, username, phoneNumber, password, confirmPassword } = userDto;
 
     if (password !== confirmPassword) {
@@ -49,7 +44,6 @@ export class AuthService {
         password: hashedPassword,
       });
 
-      // TODO: подумать над необходимыми атрибутами
       return {
         response: {
           email: user.email,
@@ -61,17 +55,7 @@ export class AuthService {
     }
   }
 
-  async signInUser(
-    userDto: SignInDto
-  ): Promise<{
-    response: {
-      email: string;
-      phoneNumber: string;
-      username: string;
-      access_token: string;
-    };
-    status: RESPONSE_STATUS;
-  }> {
+  async signInUser(userDto: SignInDto): Promise<ISignInResponseDto> {
     const { email, username, phoneNumber } = userDto;
     const user = await this.userService.findUser({
       email,

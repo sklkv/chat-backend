@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { IStatusResponse } from "@constants/index";
 
 export class SignUpDto {
   @ApiProperty({
@@ -18,12 +19,14 @@ export class SignUpDto {
 
   @ApiProperty({ example: "alligator7", description: "Пароль пользователя" })
   readonly confirmPassword: string;
+}
 
-  // @ApiProperty({
-  //   example: "true",
-  //   description: "Согласие пользователя на обработку персональных данных",
-  // })
-  // readonly consentedDataProcessing: boolean;
+export interface ISignUpResponseDto extends IStatusResponse {
+  response: {
+    email: string;
+    phoneNumber: string;
+    username: string;
+  };
 }
 
 export class SignInDto {
@@ -41,4 +44,13 @@ export class SignInDto {
 
   @ApiProperty({ example: "Alligator7", description: "Пароль пользователя" })
   readonly password: string;
+}
+
+export interface ISignInResponseDto extends IStatusResponse {
+  response: {
+    email: string;
+    phoneNumber: string;
+    username: string;
+    access_token: string;
+  };
 }

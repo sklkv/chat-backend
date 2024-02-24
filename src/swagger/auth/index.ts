@@ -15,7 +15,7 @@ export class SignUpResponse {
     phoneNumber: string;
     username: string;
   };
-  @ApiProperty({ example: "OK | FAILED", description: "Статус ответа" })
+  @ApiProperty({ example: "OK", description: "Статус ответа" })
   readonly status: RESPONSE_STATUS;
 }
 
@@ -36,6 +36,6 @@ export class SignInResponse {
     access_token: string;
   };
 
-  @ApiProperty({ example: "OK | FAILED", description: "Статус ответа" })
+  @ApiProperty({ example: "OK", description: "Статус ответа" })
   readonly status: RESPONSE_STATUS;
 }
