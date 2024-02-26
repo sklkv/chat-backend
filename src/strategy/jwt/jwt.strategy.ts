@@ -1,6 +1,7 @@
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { PassportStrategy } from "@nestjs/passport";
 import { Injectable } from "@nestjs/common";
+import { IJwtPayload } from "@constants/index";
 // import { ConfigService } from "@nestjs/config";
 
 // TODO: рефакторинг с использованием ConfigService
@@ -16,13 +17,13 @@ export class JWTStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  // TODO: добавить тип что именно хранится в jwt-токене
-  async validate(payload: any) {
+  async validate(payload: IJwtPayload) {
     // создаем user key с той формой объекта из запроса, который есть в защищенном роуте
     return {
       id: payload.sub,
-      username: payload.username,
       email: payload.email,
+      phoneNumber: payload.phoneNumber,
+      username: payload.username,
     };
   }
 }

@@ -43,11 +43,4 @@ export class User extends Model<User, IUserCreationAttributes> {
   @ApiProperty({ example: "string", description: "Телефон пользователя" })
   @Column({ type: DataType.STRING, allowNull: false })
   phoneNumber: string;
-
-  // @ApiProperty({
-  //   example: "true",
-  //   description: "Согласие пользователя на обработку персональных данных",
-  // })
-  // @Column({ type: DataType.BOOLEAN, allowNull: false })
-  // consentedDataProcessing: boolean;
 }

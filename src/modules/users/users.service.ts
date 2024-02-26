@@ -4,7 +4,6 @@ import { Sequelize } from "sequelize";
 import { SignUpDto } from "@modules/auth/dto";
 import { FindUserDto } from "./dto";
 import { User } from "./users.model";
-// import { RESPONSE_STATUS } from "@constants/index";
 
 @Injectable()
 export class UsersService {

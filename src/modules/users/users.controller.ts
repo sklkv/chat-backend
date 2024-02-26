@@ -18,11 +18,10 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: "Получение всех пользователей" })
+  @ApiOperation({ summary: "Получение информации о текущем пользователе" })
   @ApiResponse({ status: 200, type: [User] })
-  @Get("/protected")
-  protectedGet(@Request() req) {
-    // получаем пользователя и валидируем в JWTStrategy
-    return this.userService.getAllUsers();
+  @Get("/profile")
+  getUser(@Request() req) {
+    return req.user;
   }
 }

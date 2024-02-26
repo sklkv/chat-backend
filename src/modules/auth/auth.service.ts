@@ -1,5 +1,5 @@
 import * as bcrypt from "bcrypt";
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import {
   SignUpDto,
   SignInDto,
@@ -9,7 +9,7 @@ import {
 import { JwtService } from "@nestjs/jwt";
 import { UsersService } from "../users/users.service";
 import { BadBaseException } from "@exception/bad-base-exception";
-import { RESPONSE_STATUS } from "@constants/index";
+import { RESPONSE_STATUS, IJwtPayload } from "@constants/index";
 
 @Injectable()
 export class AuthService {
@@ -62,28 +62,33 @@ export class AuthService {
       username,
       phoneNumber,
     });
-
+    // TODO: удалить, задержка ради спиннера
+    await new Promise((res) => {
+      setTimeout(res, 1500);
+    });
     if (!user) {
-      throw new BadRequestException("Invalid username or email");
+      throw new BadBaseException("Invalid username or email");
     } else {
       const isMatchUser = await bcrypt.compare(userDto.password, user.password);
 
       if (!isMatchUser) {
         throw new BadBaseException("Invalid password");
       } else {
-        const jwtPayload = {
+        const jwtPayload: IJwtPayload = {
           sub: user.id,
-          email,
-          phoneNumber,
-          username,
+          email: user.email,
+          username: user.username,
+          phoneNumber: user.phoneNumber,
         };
-        // TODO: подумать над необходимыми атрибутами
+
+        const token = await this.jwtService.signAsync(jwtPayload);
+
         return {
           response: {
-            email,
-            username,
-            phoneNumber,
-            access_token: this.jwtService.sign(jwtPayload),
+            email: user.email,
+            username: user.username,
+            phoneNumber: user.phoneNumber,
+            access_token: token,
           },
           status: RESPONSE_STATUS.OK,
         };
