@@ -54,3 +54,5 @@ export interface ISignInResponseDto extends IStatusResponse {
     access_token: string;
   };
 }
+
+export interface IProfileResponseDto extends ISignUpResponseDto {}

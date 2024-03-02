@@ -1,16 +1,18 @@
 import * as bcrypt from "bcrypt";
 import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { BadBaseException } from "@exception/bad-base-exception";
+import { RESPONSE_STATUS, IJwtPayload } from "@constants/index";
 import {
   SignUpDto,
   SignInDto,
   ISignUpResponseDto,
   ISignInResponseDto,
+  IProfileResponseDto,
 } from "./dto";
-import { JwtService } from "@nestjs/jwt";
 import { UsersService } from "../users/users.service";
-import { BadBaseException } from "@exception/bad-base-exception";
-import { RESPONSE_STATUS, IJwtPayload } from "@constants/index";
 
+// TODO: завернуть ответы в утилиту
 @Injectable()
 export class AuthService {
   constructor(
@@ -55,6 +57,7 @@ export class AuthService {
     }
   }
 
+  // TODO: refresh access-token cookie
   async signInUser(userDto: SignInDto): Promise<ISignInResponseDto> {
     const { email, username, phoneNumber } = userDto;
     const user = await this.userService.findUser({
@@ -94,5 +97,12 @@ export class AuthService {
         };
       }
     }
+  }
+
+  async getUserProfile(dto: SignInDto): Promise<IProfileResponseDto> {
+    return {
+      response: dto,
+      status: RESPONSE_STATUS.OK,
+    };
   }
 }
