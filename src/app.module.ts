@@ -3,6 +3,7 @@ import { ConfigModule } from "@nestjs/config";
 import { SequelizeModule } from "@nestjs/sequelize";
 import { AuthModule } from "@modules/auth/auth.module";
 import { UsersModule } from "@modules/users/users.module";
+import { MessagesModule } from "@modules/messages/messages.module";
 // import { EventsModule } from "./ws/events.module";
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UsersModule } from "@modules/users/users.module";
     }),
     AuthModule,
     UsersModule,
+    MessagesModule,
     // EventsModule,
   ],
   controllers: [],
