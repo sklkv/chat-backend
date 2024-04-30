@@ -4,7 +4,7 @@ import { SequelizeModule } from "@nestjs/sequelize";
 import { AuthModule } from "@modules/auth/auth.module";
 import { UsersModule } from "@modules/users/users.module";
 import { MessagesModule } from "@modules/messages/messages.module";
-// import { EventsModule } from "./ws/events.module";
+import { EventsModule } from "@modules/events/events.module";
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -24,7 +24,7 @@ import { MessagesModule } from "@modules/messages/messages.module";
     AuthModule,
     UsersModule,
     MessagesModule,
-    // EventsModule,
+    EventsModule,
   ],
   controllers: [],
   providers: [],
