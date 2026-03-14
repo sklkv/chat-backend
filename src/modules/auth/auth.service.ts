@@ -12,7 +12,7 @@ import {
 } from "./dto";
 import { UsersService } from "../users/users.service";
 
-// TODO: завернуть ответы в утилиту
+// TODO: use interceptor to return consistent response
 @Injectable()
 export class AuthService {
   constructor(
@@ -21,11 +21,11 @@ export class AuthService {
   ) {}
 
   async singUpUser(userDto: SignUpDto): Promise<ISignUpResponseDto> {
-    const { email, username, phoneNumber, password, confirmPassword } = userDto;
+    const { email, username, phoneNumber, password } = userDto;
 
-    if (password !== confirmPassword) {
-      throw new BadBaseException("Incorrect password confirmation");
-    }
+    // if (password !== confirmPassword) {
+    //   throw new BadBaseException("Incorrect password confirmation");
+    // }
 
     const sameCredentialsUsers = await this.userService.findSameCredentialUsers(
       {

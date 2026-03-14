@@ -16,9 +16,6 @@ export class SignUpDto {
 
   @ApiProperty({ example: "alligator7", description: "Пароль пользователя" })
   readonly password: string;
-
-  @ApiProperty({ example: "alligator7", description: "Пароль пользователя" })
-  readonly confirmPassword: string;
 }
 
 export interface ISignUpResponseDto extends IStatusResponse {

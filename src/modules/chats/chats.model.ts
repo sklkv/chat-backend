@@ -33,5 +33,5 @@ export class Chats extends Model<Chats, IChatCreationAttributes> {
     unique: false,
     allowNull: false,
   })
-  participants: string[];
+  participants: number[];
 }

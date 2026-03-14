@@ -6,7 +6,7 @@ import { setupSwaggerModule } from "@swagger/setup";
 import { HttpExceptionFilter } from "@exception/http-exception.filter";
 
 async function bootstrap() {
-  const PORT = process.env.PORT || 5000;
+  const PORT = process.env.PORT;
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   setupSwaggerModule(app);
   app.enableCors();

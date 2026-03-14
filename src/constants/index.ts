@@ -14,3 +14,5 @@ export interface IJwtPayload {
   phoneNumber: string;
   username: string;
 }
+
+export const JWT_SECRET = "a-string-secret-at-least-256-bits-long";

@@ -1,5 +1,15 @@
-import { Controller, Get, Param, Post, Body } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Request,
+  HttpCode,
+  Post,
+  Body,
+  UseGuards,
+} from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { JwtAuthGuard } from "@strategy/jwt/jwt.guard";
+import { IJwtPayload } from "@constants/index";
 import { Chats } from "./chats.model";
 import { ChatsService } from "./chats.service";
 import { CreateChatDto } from "./dto";
@@ -9,18 +19,18 @@ import { CreateChatDto } from "./dto";
 export class ChatsController {
   constructor(private chatsService: ChatsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "Получение списка чатов пользователя" })
   @ApiResponse({ status: 200, type: [Chats] })
-  @Get(":participant_id")
-  getUserChats(@Param("participant_id") participant_id: string) {
-    return this.chatsService.findUserChats({
-      participant_id,
-    });
+  @Get("all")
+  @HttpCode(200)
+  getUserChats(@Request() req: { user: IJwtPayload }) {
+    return this.chatsService.findUserChats(req.user);
   }
 
   @ApiOperation({ summary: "Создание чата" })
   @ApiResponse({ status: 200, type: Chats })
-  @Post("/create")
+  @Post("create")
   createChat(@Body() dto: CreateChatDto) {
     return this.chatsService.createChat(dto);
   }

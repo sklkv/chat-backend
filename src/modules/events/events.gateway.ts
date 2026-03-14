@@ -6,7 +6,7 @@ import {
 } from "@nestjs/websockets";
 import { Server } from "socket.io";
 
-@WebSocketGateway(Number(process.env.WS_PORT), {
+@WebSocketGateway(3000, {
   cors: {
     origin: "*",
   },
@@ -18,7 +18,7 @@ export class EventsGateway {
 
   @SubscribeMessage("new-connection")
   async newConnection(@MessageBody() data: string) {
-    console.log(data);
+    // console.log(data);
   }
 
   @SubscribeMessage("user-dispatch-message")

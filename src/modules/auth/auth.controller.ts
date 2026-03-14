@@ -38,7 +38,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "Получение информации о текущем пользователе" })
   @ApiResponse({ status: 200, type: [User] })
-  @Get("/profile")
+  @Get("profile")
   getUser(@Request() req) {
     return this.authService.getUserProfile(req.user);
   }

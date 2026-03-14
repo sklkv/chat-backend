@@ -1,8 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { randomUUID } from "crypto";
+import { IJwtPayload } from "@constants/index";
 import { Chats } from "./chats.model";
-import { CreateChatDto, FindUserChatsDto } from "./dto";
+import { CreateChatDto, DeleteChatDto } from "./dto";
 
 @Injectable()
 export class ChatsService {
@@ -17,15 +18,23 @@ export class ChatsService {
     return chat;
   }
 
-  async findUserChats(dto: FindUserChatsDto): Promise<Chats[]> {
+  async findUserChats(dto: IJwtPayload): Promise<Chats[]> {
     const chats = await this.chatsRepository.findAll({
       where: {
         participants: {
-          include: dto.participant_id,
+          include: dto.sub,
         },
       },
     });
 
     return chats;
+  }
+
+  async deleteChat(dto: DeleteChatDto): Promise<void> {
+    await this.chatsRepository.destroy({
+      where: {
+        id: dto.chatId,
+      },
+    });
   }
 }

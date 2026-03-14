@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { SequelizeModule } from "@nestjs/sequelize";
 import { AuthModule } from "@modules/auth/auth.module";
+import { ChatsModule } from "@modules/chats/chats.module";
 import { UsersModule } from "@modules/users/users.module";
 import { MessagesModule } from "@modules/messages/messages.module";
 import { EventsModule } from "@modules/events/events.module";
@@ -22,6 +23,7 @@ import { EventsModule } from "@modules/events/events.module";
       synchronize: true,
     }),
     AuthModule,
+    ChatsModule,
     UsersModule,
     MessagesModule,
     EventsModule,
