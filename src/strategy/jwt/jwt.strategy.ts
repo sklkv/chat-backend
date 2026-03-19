@@ -1,24 +1,20 @@
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { PassportStrategy } from "@nestjs/passport";
 import { Injectable } from "@nestjs/common";
-import { JWT_SECRET, IJwtPayload } from "@constants/index";
-// import { ConfigService } from "@nestjs/config";
+import { ConfigService } from "@nestjs/config";
+import { IJwtPayload } from "@constants/index";
 
-// TODO: рефакторинг с использованием ConfigService
 @Injectable()
 export class JWTStrategy extends PassportStrategy(Strategy) {
-  // constructor(configService: ConfigService) {
-  constructor() {
+  constructor(configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: JWT_SECRET,
-      // secretOrKey: configService.get<string>("jwt_secret"),
+      secretOrKey: configService.get<string>("JWT_SECRET"),
     });
   }
 
   async validate(payload: IJwtPayload) {
-    // создаем user key с той формой объекта из запроса, который есть в защищенном роуте
     return {
       id: payload.sub,
       email: payload.email,

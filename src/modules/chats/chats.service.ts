@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+import { Op } from "sequelize";
 import { randomUUID } from "crypto";
 import { IJwtPayload } from "@constants/index";
 import { Chats } from "./chats.model";
@@ -22,7 +23,7 @@ export class ChatsService {
     const chats = await this.chatsRepository.findAll({
       where: {
         participants: {
-          include: dto.sub,
+          [Op.contains]: [dto.sub],
         },
       },
     });

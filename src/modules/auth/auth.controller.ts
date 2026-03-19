@@ -6,10 +6,12 @@ import {
   HttpCode,
   UseGuards,
   Request,
+  Response,
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { SignUpResponse, SignInResponse } from "@swagger/auth";
 import { JwtAuthGuard } from "@strategy/jwt/jwt.guard";
+import { JwtRefreshGuard } from "@strategy/refresh-jwt/refresh-jwt.guard";
 import { User } from "@modules/users/users.model";
 import { AuthService } from "./auth.service";
 import { SignUpDto, SignInDto } from "./dto";
@@ -31,8 +33,22 @@ export class AuthController {
   @ApiResponse({ status: 200, type: SignInResponse })
   @Post("signin")
   @HttpCode(200)
-  signin(@Body() singInDto: SignInDto) {
-    return this.authService.signInUser(singInDto);
+  async signin(@Body() singInDto: SignInDto, @Response({ passthrough: true }) res) {
+    const result = await this.authService.signInUser(singInDto);
+    const { refresh_token, ...response } = result;
+    res.cookie("refresh_token", refresh_token, {
+      httpOnly: true,
+      sameSite: "strict",
+    });
+    return response;
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @ApiOperation({ summary: "Обновление access токена" })
+  @Post("refresh")
+  @HttpCode(200)
+  refresh(@Request() req) {
+    return this.authService.refreshAccessToken(req.user);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -4,7 +4,7 @@ import { Column, DataType, Model, Table } from "sequelize-typescript";
 interface IMessageCreationAttributes {
   id: string;
   chat_id: string;
-  user_id: string;
+  user_id: number;
   type: string;
   text: string;
 }
@@ -35,15 +35,15 @@ export class Messages extends Model<Messages, IMessageCreationAttributes> {
   chat_id: string;
 
   @ApiProperty({
-    example: "89rct5ac2-8493-49b0-95d8-de843d90e6ca",
+    example: 1,
     description: "Уникальное идентификатор пользователя",
   })
   @Column({
-    type: DataType.UUID,
+    type: DataType.INTEGER,
     unique: false,
     allowNull: false,
   })
-  user_id: string;
+  user_id: number;
 
   @ApiProperty({ example: "text", description: "Тип сообщения" })
   @Column({ type: DataType.STRING, allowNull: false })

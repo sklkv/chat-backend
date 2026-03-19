@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { Sequelize } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import { SignUpDto } from "@modules/auth/dto";
 import { FindUserDto } from "./dto";
 import { User } from "./users.model";
@@ -38,6 +38,19 @@ export class UsersService {
 
   async getAllUsers(): Promise<User[]> {
     const users = await this.userRepository.findAll();
+    return users;
+  }
+
+  async searchUsers(query: string): Promise<User[]> {
+    const users = await this.userRepository.findAll({
+      where: {
+        [Op.or]: [
+          { username: { [Op.iLike]: `%${query}%` } },
+          { email: { [Op.iLike]: `%${query}%` } },
+        ],
+      },
+      attributes: ["id", "username", "email", "phoneNumber"],
+    });
     return users;
   }
 }

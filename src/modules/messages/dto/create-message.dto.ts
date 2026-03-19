@@ -8,10 +8,10 @@ export class CreateMessageDto {
   chat_id: string;
 
   @ApiProperty({
-    example: "89rct5ac2-8493-49b0-95d8-de843d90e6ca",
+    example: 1,
     description: "Уникальное идентификатор пользователя",
   })
-  user_id: string;
+  user_id: number;
 
   @ApiProperty({ example: "text", description: "Тип сообщения" })
   type: string;

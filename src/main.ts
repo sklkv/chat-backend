@@ -1,5 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
+import { ValidationPipe } from "@nestjs/common";
 import * as cookieParser from "cookie-parser";
 import { AppModule } from "./app.module";
 import { setupSwaggerModule } from "@swagger/setup";
@@ -11,6 +12,7 @@ async function bootstrap() {
   setupSwaggerModule(app);
   app.enableCors();
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.use(cookieParser());
 
   await app.listen(PORT, () => {

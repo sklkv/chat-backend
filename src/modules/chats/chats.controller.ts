@@ -4,6 +4,8 @@ import {
   Request,
   HttpCode,
   Post,
+  Delete,
+  Param,
   Body,
   UseGuards,
 } from "@nestjs/common";
@@ -28,10 +30,21 @@ export class ChatsController {
     return this.chatsService.findUserChats(req.user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "Создание чата" })
   @ApiResponse({ status: 200, type: Chats })
   @Post("create")
+  @HttpCode(200)
   createChat(@Body() dto: CreateChatDto) {
     return this.chatsService.createChat(dto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Удаление чата" })
+  @ApiResponse({ status: 200 })
+  @Delete(":id")
+  @HttpCode(200)
+  deleteChat(@Param("id") id: string) {
+    return this.chatsService.deleteChat({ chatId: id });
   }
 }

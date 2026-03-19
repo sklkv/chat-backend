@@ -3,10 +3,7 @@ import { Column, DataType, Model, Table } from "sequelize-typescript";
 
 interface IChatCreationAttributes {
   id: string;
-  chat_id: string;
-  user_id: string;
-  type: string;
-  text: string;
+  participants: number[];
 }
 
 @Table({ tableName: "chats" })
@@ -24,12 +21,11 @@ export class Chats extends Model<Chats, IChatCreationAttributes> {
   id: string;
 
   @ApiProperty({
-    example:
-      "[89rct5ac2-8493-49b0-95d8-de843d90e6ca, 90rct5ac2-8493-49b0-95d8-de843d90e6ca]",
+    example: [1, 2],
     description: "Список участников",
   })
   @Column({
-    type: DataType.ARRAY(DataType.UUID),
+    type: DataType.ARRAY(DataType.INTEGER),
     unique: false,
     allowNull: false,
   })

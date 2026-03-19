@@ -1,5 +1,6 @@
-import { Controller, Get, Param, Post, Body } from "@nestjs/common";
-import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { Controller, Get, Post, Param, Query, Body, UseGuards } from "@nestjs/common";
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { JwtAuthGuard } from "@strategy/jwt/jwt.guard";
 import { Messages } from "./messages.model";
 import { MessagesService } from "./messages.service";
 import { CreateMessageDto } from "./dto";
@@ -9,24 +10,24 @@ import { CreateMessageDto } from "./dto";
 export class MessagesController {
   constructor(private messagesService: MessagesService) {}
 
-  @ApiOperation({ summary: "Получение сообщения чата согласно диапазону" })
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Получение сообщений чата по диапазону" })
+  @ApiQuery({ name: "from", required: false, example: 0 })
+  @ApiQuery({ name: "to", required: false, example: 50 })
   @ApiResponse({ status: 200, type: [Messages] })
-  @Get([":chat_id", ":from", ":to"])
+  @Get(":chat_id")
   getChatMessages(
     @Param("chat_id") chat_id: string,
-    @Param("from") from: number,
-    @Param("to") to: number
+    @Query("from") from: number = 0,
+    @Query("to") to: number = 50
   ) {
-    return this.messagesService.getChatMessages({
-      chat_id,
-      from,
-      to,
-    });
+    return this.messagesService.getChatMessages({ chat_id, from, to });
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "Сохранение сообщения" })
   @ApiResponse({ status: 200, type: Messages })
-  @Post("/create")
+  @Post("create")
   createMessage(@Body() dto: CreateMessageDto) {
     return this.messagesService.createMessage(dto);
   }
