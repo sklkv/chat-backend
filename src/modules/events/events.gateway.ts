@@ -101,6 +101,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   ) {
     client.to(data.chat_id).emit(WS_EVENTS.SERVER_TYPING, {
       user: client.data.user,
+      chat_id: data.chat_id,
     });
   }
 
@@ -111,6 +112,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   ) {
     client.to(data.chat_id).emit(WS_EVENTS.SERVER_STOP_TYPING, {
       user: client.data.user,
+      chat_id: data.chat_id,
     });
   }
 }
