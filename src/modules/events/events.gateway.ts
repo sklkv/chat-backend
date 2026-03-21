@@ -6,19 +6,13 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
+  WsException,
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { MessagesService } from "@modules/messages/messages.service";
 import { WS_EVENTS } from "@constants/index";
-
-interface IDispatchMessagePayload {
-  chat_id: string;
-  user_id: number;
-  type: string;
-  text: string;
-}
 
 @WebSocketGateway(3001, {
   cors: { origin: "*" },
@@ -76,7 +70,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage(WS_EVENTS.SEND_MESSAGE)
   async userDispatchMessage(
-    @MessageBody() data: IDispatchMessagePayload,
+    @MessageBody() data: { chat_id: string; type: string; text: string },
     @ConnectedSocket() client: Socket
   ) {
     if (!client.data.user) {
@@ -84,9 +78,17 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       return;
     }
 
+    const uuidRegex =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!data.chat_id || !uuidRegex.test(data.chat_id)) {
+      throw new WsException("Invalid chat_id");
+    }
+
+    const userId: number = client.data.user.sub;
+
     const message = await this.messagesService.createMessage({
       chat_id: data.chat_id,
-      user_id: data.user_id,
+      user_id: userId,
       type: data.type,
       text: data.text,
     });

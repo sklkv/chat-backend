@@ -24,6 +24,7 @@ export class MessagesService {
       where: { chat_id: dto.chat_id },
       limit: dto.to - dto.from,
       offset: dto.from,
+      order: [["createdAt", "DESC"]],
     });
     return messages;
   }

@@ -11,7 +11,6 @@ import {
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "@strategy/jwt/jwt.guard";
-import { IJwtPayload } from "@constants/index";
 import { Chats } from "./chats.model";
 import { ChatsService } from "./chats.service";
 import { CreateChatDto } from "./dto";
@@ -26,8 +25,8 @@ export class ChatsController {
   @ApiResponse({ status: 200, type: [Chats] })
   @Get("all")
   @HttpCode(200)
-  getUserChats(@Request() req: { user: IJwtPayload }) {
-    return this.chatsService.findUserChats(req.user);
+  getUserChats(@Request() req: { user: { id: number } }) {
+    return this.chatsService.findUserChats(req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -33,7 +33,10 @@ export class AuthController {
   @ApiResponse({ status: 200, type: SignInResponse })
   @Post("signin")
   @HttpCode(200)
-  async signin(@Body() singInDto: SignInDto, @Response({ passthrough: true }) res) {
+  async signin(
+    @Body() singInDto: SignInDto,
+    @Response({ passthrough: true }) res
+  ) {
     const result = await this.authService.signInUser(singInDto);
     const { refresh_token, ...response } = result;
     res.cookie("refresh_token", refresh_token, {
